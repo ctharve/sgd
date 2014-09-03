@@ -14,6 +14,7 @@ public class BasicAnalysis {
 	 */
 	public Set<Integer> uniqTokens(DataSet dataset) {	
 	       int count = 0;
+	       // new calls the contructor for thge class HashSet
 	       Set<Integer> ids = new HashSet<Integer>();
 	       
 	       while(dataset.hasNext()) {
@@ -25,15 +26,13 @@ public class BasicAnalysis {
 		 }
 
 		 count++;
-	         
 		 if (count % 100000 == 0) {
 	             System.err.println("Loaded " + count + " lines");
 	         }
 	       }
 
 	       // Important: remember to reset the dataset everytime
-	       dataset.reset();	
-	       
+	       dataset.reset();		       
 	       return ids;
 	}
 	
@@ -45,10 +44,31 @@ public class BasicAnalysis {
 	 * @return
 	 */
 	public Map<Integer, Set<Integer>> uniqUsersPerAgeGroup(DataSet dataset) {
-		// Fill in your code here
-	        // scan entire dataset and for each observation index the Map with 
-	        // the age group and insert the userid if unique
-		return null;
+	       Map<Integer, Set<Integer>> usersAge = new HashMap<Integer, Set<Integer>>();
+	       int count = 0;
+	       while(dataset.hasNext()) {
+		   DataInstance instance = dataset.nextInstance(); 
+		   int thisAge = instance.age;
+		   int thisId = instance.userid;
+		   
+		   if(usersAge.containsKey(thisAge)) {
+		       Set<Integer> theseIds = usersAge.get(thisAge);
+		       theseIds.add(thisId);
+		       usersAge.put(thisAge, theseIds);
+		   } else {
+		       Set<Integer> theseIds = new HashSet<Integer>();
+		       theseIds.add(thisId);
+		       usersAge.put(thisAge, theseIds);
+		   }
+		   
+		   count++;
+		   if (count % 100000 == 0) {
+		       System.err.println("Loaded " + count + " lines");
+		   }   
+	       }
+
+	       dataset.reset();
+	       return usersAge;
 	}
 
 	/**
@@ -60,6 +80,7 @@ public class BasicAnalysis {
 	       while(dataset.hasNext()) {
 		   DataInstance instance = dataset.nextInstance();
 		   clickSum += instance.clicked;
+		   
 		   numExamples++;
 		   if (numExamples % 100000 == 0) {
 		       System.err.println("Loaded " + numExamples + " lines");
@@ -67,7 +88,6 @@ public class BasicAnalysis {
 	       }
 
 	       double average = ((double) clickSum) / numExamples;
-	       // Important: remember to reset the dataset everytime
 	       dataset.reset();	
 	       return average;
 	}

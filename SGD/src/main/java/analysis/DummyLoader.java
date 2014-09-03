@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
+import java.util.Iterator;
 
 public class DummyLoader {
 	/**
@@ -57,27 +57,43 @@ public class DummyLoader {
 		// useful for printing new lines . . . duh
 		String seperator = System.getProperty("line.separator");
 		
+		//
 		// process training data
 		DataSet training = new DataSet(
 				"/Users/cbboipdx/data/clickprediction/data/train.txt",
 				true, trainSize);
 		//loader.scanAndPrint(training);
 		BasicAnalysis basic = new BasicAnalysis();
-		Set<Integer> ids = basic.uniqTokens(training);
-		int numTokens = ids.size();
-		System.out.printf("Training data: unique words =  " + numTokens + seperator);
 		//double ctr = basic.averageCtr(training);
 		//System.out.printf("Test data: CTR =  %.4f" + seperator, ctr);
+		//Set<Integer> ids = basic.uniqTokens(training);
+		//int numTokens = ids.size();
+		//System.out.printf("Training data: unique words =  " + numTokens + seperator);
+		
+		Map<Integer, Set<Integer>> usersAge = basic.uniqUsersPerAgeGroup(training);
+		Set<Integer> keys = usersAge.keySet();
+		Iterator<Integer> ageKeys = keys.iterator();
 
+		while(ageKeys.hasNext()) {
+		    int thisAge = ageKeys.next();
+		    Set<Integer> ids = usersAge.get(thisAge);
+		    System.out.printf("Training data: age group " 
+				      + thisAge 
+				      + " contains " 
+				      + ids.size() 
+				      + " unique users" 
+				      + seperator);
+		}
+
+		//
 		// process test data
-		DataSet testing = new DataSet(
-				"/Users/cbboipdx/data/clickprediction/data/test.txt",
-				false, testSize);
+		//DataSet testing = new DataSet(
+		//	         "/Users/cbboipdx/data/clickprediction/data/test.txt",
+		//	         false, testSize);
 		//loader.scanAndPrint(testing);
-		BasicAnalysis basicTest = new BasicAnalysis();
-		Set<Integer> idsTesting = basic.uniqTokens(testing);
-		int numTokensTest = idsTesting.size();
-		System.out.printf("Test data: unique words =  " + numTokensTest + seperator);
-
+		//BasicAnalysis basicTest = new BasicAnalysis();
+		//Set<Integer> idsTesting = basic.uniqTokens(testing);
+		//int numTokensTest = idsTesting.size();
+		//System.out.printf("Test data: unique words =  " + numTokensTest + seperator);
 	}
 }
