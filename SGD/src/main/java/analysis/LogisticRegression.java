@@ -93,7 +93,9 @@ public class LogisticRegression {
 		int thisInst = instTokens[ii];
 		if(allTokens.containsKey(thisInst)){
 		    tokenSum += allTokens.get(thisInst);
+		
 		}
+		// TODO: throw an error if token is not found
 	    }
 
 	    Double innerP  = 1  + weights.wAge*instance.age 
@@ -156,6 +158,7 @@ public class LogisticRegression {
 		myWeights.wPosition += step * (instance.position*diff);
 	        myWeights.wGender += step * (instance.gender*diff);
 		myWeights.wDepth += step * (instance.depth*diff);
+		// need to update wTokens
 	    }
 	    
 	    myWeights.toString();
