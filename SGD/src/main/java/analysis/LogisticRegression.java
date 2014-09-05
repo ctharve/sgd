@@ -158,20 +158,27 @@ public class LogisticRegression {
 		myWeights.wPosition += step * (instance.position*diff);
 	        myWeights.wGender += step * (instance.gender*diff);
 		myWeights.wDepth += step * (instance.depth*diff);
+		
 		// need to update wTokens
+		int[] instTokens = instance.tokens;
+		Map<Integer, Double> allTokens = myWeights.wTokens;
+
+		for (int ii=0; ii<instTokens.length; ii++) {
+		    int thisInst = instTokens[ii];
+		    if(allTokens.containsKey(thisInst)){
+			double thisWeight = allTokens.get(thisInst) + step * diff;
+			allTokens.put(thisInst, thisWeight);
+		    } else {
+			double thisWeight = step * diff;
+			allTokens.put(thisInst, thisWeight);
+		    }
+		}
+
 	    }
 	    
 	    myWeights.toString();
 	    dataset.reset();
 	    return myWeights;
-	
-		// Fill in your code here. The structure should look like:
-		// For each data point: {
-    		// Your code: perform delayed regularization
-      			// Your code: predict the label, record the loss	  
-  			// Your code: compute w0 + <w, x>, and gradient
-  			// Your code: update weights along the negative gradient
-		// }
 	}
 
 	/**
