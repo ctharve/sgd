@@ -160,6 +160,7 @@ public class LogisticRegression {
 		myWeights.wDepth += step * (instance.depth*diff);
 		
 		// need to update wTokens
+		// for every obs the token feature is represented as a binary vector
 		int[] instTokens = instance.tokens;
 		Map<Integer, Double> allTokens = myWeights.wTokens;
 
@@ -173,9 +174,8 @@ public class LogisticRegression {
 			allTokens.put(thisInst, thisWeight);
 		    }
 		}
-
 	    }
-	    
+	    // probably should print this
 	    myWeights.toString();
 	    dataset.reset();
 	    return myWeights;
