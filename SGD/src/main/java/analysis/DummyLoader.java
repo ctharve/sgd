@@ -66,15 +66,15 @@ public class DummyLoader {
 		BasicAnalysis basic = new BasicAnalysis();
 		//double ctr = basic.averageCtr(training);
 		//System.out.printf("Test data: CTR =  %.4f" + seperator, ctr);
-		//Set<Integer> ids = basic.uniqTokens(training);
-		//int numTokens = ids.size();
-		//System.out.printf("Training data: unique words =  " + numTokens + seperator);
+		Set<Integer> ids = basic.uniqTokens(training);
+		int numTokens = ids.size();
+	        System.out.printf("Training data: unique words =  " + numTokens + seperator);
 		
-		Map<Integer, Set<Integer>> usersAge = basic.uniqUsersPerAgeGroup(training);
-		Set<Integer> keys = usersAge.keySet();
-		Iterator<Integer> ageKeys = keys.iterator();
+		//Map<Integer, Set<Integer>> usersAge = basic.uniqUsersPerAgeGroup(training);
+		//Set<Integer> keys = usersAge.keySet();
+		//Iterator<Integer> ageKeys = keys.iterator();
 
-		while(ageKeys.hasNext()) {
+		/*while(ageKeys.hasNext()) {
 		    int thisAge = ageKeys.next();
 		    Set<Integer> ids = usersAge.get(thisAge);
 		    System.out.printf("Training data: age group " 
@@ -83,7 +83,7 @@ public class DummyLoader {
 				      + ids.size() 
 				      + " unique users" 
 				      + seperator);
-		}
+		}*/
 
 		//
 		// process test data

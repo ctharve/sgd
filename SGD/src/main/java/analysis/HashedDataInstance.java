@@ -34,6 +34,7 @@ public class HashedDataInstance {
 		} else {
 			clicked = -1;
 		}
+		
 		depth = Integer.valueOf(fields[offset + 0]);
 		position = Integer.valueOf(fields[offset + 1]);
 		userid = Integer.valueOf(fields[offset + 2]);
@@ -42,10 +43,24 @@ public class HashedDataInstance {
 		age = Integer.valueOf(fields[offset + 4]);
 		
 		String[] tokens = fields[offset+5].split(",");
+ 
+		// 09.07.14 ctharve
+		// dim := hash modulo
+		featuredim = dim;
 
-		/**
-		 * Fill in your code here to create a hashedTextFeature.
-		 */
+		for(int jj=0; jj<tokens.length; jj++) {
+		    // X_j:=1, always, because we handle each token individually
+		    int hj = HashUtil.hashToRange(tokens[jj], featuredim);
+		    int xi_j = HashUtil.hashToSign(tokens[jj]); 
+		    
+		    if (hashedTextFeature.containsKey(hj)) {
+			int currentVal = hashedTextFeature.get(hj);
+			currentVal += xi_j;
+			hashedTextFeature.put(hj, currentVal);
+		    } else {
+			hashedTextFeature.put(hj, xi_j);
+		    }
+		}
 
 		if (personal) {
 			/**
@@ -58,10 +73,12 @@ public class HashedDataInstance {
 	/**
 	 * Helper function. Updates the feature hashmap with a given key and value.
 	 * You can use HashUtil.hashToRange as h, and HashUtil.hashToSign as \xi. 
+	 * NOTE: this method does not accept M, the dimension of the new hash space.
+	 *       we will not use this function
+	 *
 	 * @param key
 	 * @param val
 	 */
-	private void updateFeature(String key, int val) {
-		// Fill in your code here
+	private void updateFeature(String key, int val) {	    
 	}
 }
