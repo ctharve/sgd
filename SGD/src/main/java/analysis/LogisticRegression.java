@@ -151,6 +151,9 @@ public class LogisticRegression {
 		    avLoss = loss / count; 
 		    AvgLoss.add(loss);
 		}
+		if (count % 100000 == 0) {
+		    System.err.println("Trained on " + count + " observations");
+		}
 
 		double diff = y-y_hat;
 		myWeights.w0 += step * (1*diff);;
@@ -194,6 +197,27 @@ public class LogisticRegression {
 	}
 
 	public static void main(String args[]) throws IOException {
-		// Fill in your code here
+	    String seperator = System.getProperty("line.separator");
+	    
+	    int trainSize = 2335859;
+	    int testSize = 1016552;
+	    
+	    DataSet training = new DataSet(
+				"/Users/cbboipdx/data/clickprediction/data/train.txt",
+				true, trainSize);
+	    DataSet test = new DataSet(
+				"/Users/cbboipdx/data/clickprediction/data/test.txt",
+				false, testSize);
+	    
+	    LogisticRegression myReg = new LogisticRegression();
+	    
+	    ArrayList<Double> AvgLoss = new ArrayList<Double>();
+	    double myLambda = 0.002;
+	    double myStep = 0.01;
+ 
+	    Weights trainedWeights = myReg.train(training, myLambda, myStep, AvgLoss);
+	    double myNorm = trainedWeights.l2norm();
+	    System.out.printf("L2 norm of weight vector = " + myNorm + seperator);
+
 	}
 }
