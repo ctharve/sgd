@@ -192,8 +192,15 @@ public class LogisticRegression {
 	 * @return An array storing the CTR for each datapoint in the test data.
 	 */
 	public ArrayList<Double> predict(Weights weights, DataSet dataset) {
-		// Fill in your code here
-		return null;
+	    ArrayList<Double>  y_hat = new ArrayList<Double>();
+		
+	    while (dataset.hasNext()) {
+		DataInstance instance = dataset.nextline();
+		Double predicted = ;
+
+		y_hat.add(predicted);
+	    }
+	    return y_hat;
 	}
 
 	public static void main(String args[]) throws IOException {

@@ -2,6 +2,11 @@ package src.main.java.analysis;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.Iterator;
 
 public class DummyLoader {
 	/**
@@ -13,6 +18,7 @@ public class DummyLoader {
 	 */
 	public void scanAndPrint(DataSet dataset) {
 		int count = 0;
+		//int clickSum = 0;
 		System.err.println("Loading data from " + dataset.path + " ... ");
 		while (dataset.hasNext()) {
 			DataInstance instance = dataset.nextInstance();
@@ -21,38 +27,73 @@ public class DummyLoader {
 			 * instance will come here. For example: tracking the max clicks,
 			 * update token frequency table, or compute gradient for logistic
 			 * regression...
-			 */
-			System.out.println(instance.toString());
+			 * or not. implement in a method of the class BasicAnalysis
+			 */      	
+			//System.out.println(instance.toString());
+			//clickSum += instance.clicked;
 			count++;
+			
 			if (count % 100000 == 0) {
 				System.err.println("Loaded " + count + " lines");
 			}
 		}
 		if (count < dataset.size) {
-			System.err
-					.println("Warning: the real size of the data is less than the input size: "
+			System.err.println("Warning: the real size of the data is less than the input size: "
 							+ dataset.size + "<" + count);
 		}
 		System.err.println("Done. Total processed instances: " + count);
-		dataset.reset();// Important: remember to reset the dataset everytime
-						// you are done with processing.
+		//System.err.println("Number CTR: " + clickSum);
+		// Important: remember to reset the dataset after each pass through
+		dataset.reset();
 	}
 
 	public static void main(String[] args) throws FileNotFoundException,
 			IOException {
 		DummyLoader loader = new DummyLoader();
-		int size = 10;
+		//int size = 10;
+		int trainSize = 2335859;
+		int testSize = 1016552;
 
-		// Creates a dataset from the trainingdata with size = 10;
+		// useful for printing new lines . . . duh
+		String seperator = System.getProperty("line.separator");
+		
+		//
+		// process training data
 		DataSet training = new DataSet(
 				"/Users/cbboipdx/data/clickprediction/data/train.txt",
-				true, size);
-		loader.scanAndPrint(training);
+				true, trainSize);
+		//loader.scanAndPrint(training);
+		BasicAnalysis basic = new BasicAnalysis();
+		//double ctr = basic.averageCtr(training);
+		//System.out.printf("Test data: CTR =  %.4f" + seperator, ctr);
+		Set<Integer> ids = basic.uniqTokens(training);
+		int numTokens = ids.size();
+	        System.out.printf("Training data: unique words =  " + numTokens + seperator);
+		
+		//Map<Integer, Set<Integer>> usersAge = basic.uniqUsersPerAgeGroup(training);
+		//Set<Integer> keys = usersAge.keySet();
+		//Iterator<Integer> ageKeys = keys.iterator();
 
-		// Creates a dataset from the testdata with size = 10;
-		DataSet testing = new DataSet(
-				"/Users/cbboipdx/data/clickprediction/data/test.txt",
-				false, size);
-		loader.scanAndPrint(testing);
+		/*while(ageKeys.hasNext()) {
+		    int thisAge = ageKeys.next();
+		    Set<Integer> ids = usersAge.get(thisAge);
+		    System.out.printf("Training data: age group " 
+				      + thisAge 
+				      + " contains " 
+				      + ids.size() 
+				      + " unique users" 
+				      + seperator);
+		}*/
+
+		//
+		// process test data
+		//DataSet testing = new DataSet(
+		//	         "/Users/cbboipdx/data/clickprediction/data/test.txt",
+		//	         false, testSize);
+		//loader.scanAndPrint(testing);
+		//BasicAnalysis basicTest = new BasicAnalysis();
+		//Set<Integer> idsTesting = basic.uniqTokens(testing);
+		//int numTokensTest = idsTesting.size();
+		//System.out.printf("Test data: unique words =  " + numTokensTest + seperator);
 	}
 }
