@@ -10,6 +10,7 @@ large and sparse, so it would be a computational benefit to reduce it's dimensio
 After implementing gradient descent to train a logisitc regression model, we will also implement L2 regularization with lazy
 updating, and a hashing trick to reduce the dimension of the BOW features. 
 
-Starter code is from Dr. Emily Fox's Machine Learning for Big Data [course].
+Starter code is from Dr. Emily Fox's Machine Learning for Big Data [course]. With the exception of the original commit, all lines of code are [my] own.
 <!-- links -->
 [course]:http://courses.cs.washington.edu/courses/cse547/14wi/homework.html
+[my]:https://github.com/ctharve
