@@ -195,8 +195,8 @@ public class LogisticRegression {
 	    ArrayList<Double>  y_hat = new ArrayList<Double>();
 		
 	    while (dataset.hasNext()) {
-		DataInstance instance = dataset.nextline();
-		Double predicted = ;
+		DataInstance instance = dataset.nextInstance();
+		Double predicted = 00.00;
 
 		y_hat.add(predicted);
 	    }
